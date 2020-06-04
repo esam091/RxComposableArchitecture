@@ -24,25 +24,25 @@ import RxSwift
 /// - Returns: An effect that publishes events only after a specified time elapses.
 
 extension ObservableType {
-    public func debounce(
-        id: AnyHashable,
-        for dueTime: RxTimeInterval,
-        scheduler: SchedulerType
-    ) -> Observable<Element> {
-        Observable<Void>.just(())
-            .delay(dueTime, scheduler: scheduler)
-            .flatMap { self }
-            .cancellable(id: id, cancelInFlight: true)
-    }
+  public func debounce(
+    id: AnyHashable,
+    for dueTime: RxTimeInterval,
+    scheduler: SchedulerType
+  ) -> Observable<Element> {
+    Observable<Void>.just(())
+      .delay(dueTime, scheduler: scheduler)
+      .flatMap { self }
+      .cancellable(id: id, cancelInFlight: true)
+  }
 }
 
 extension SharedSequence {
-    public func debounce(
-        id: AnyHashable,
-        for dueTime: RxTimeInterval
-    ) -> SharedSequence {
-        asObservable()
-            .debounce(id: id, for: dueTime, scheduler: SharingScheduler.make())
-            .asSharedSequence(onErrorDriveWith: .empty())
-    }
+  public func debounce(
+    id: AnyHashable,
+    for dueTime: RxTimeInterval
+  ) -> SharedSequence {
+    asObservable()
+      .debounce(id: id, for: dueTime, scheduler: SharingScheduler.make())
+      .asSharedSequence(onErrorDriveWith: .empty())
+  }
 }
